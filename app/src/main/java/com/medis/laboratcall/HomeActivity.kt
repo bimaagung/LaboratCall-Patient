@@ -1,17 +1,22 @@
 package com.medis.laboratcall
 
+import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.medis.laboratcall.Fragment.HomeFragment
 import com.medis.laboratcall.Fragment.ProfilFragment
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeActivity : AppCompatActivity() {
     private var content: FrameLayout? = null
+
 
     //kofigurasi navigasi bottom tab
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -45,5 +50,9 @@ class HomeActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener) //koneksi navigasi dan konfigurasi
         val fragment = HomeFragment() //tab muncul pertama
         addFragment(fragment)
+
+        var token  = getSharedPreferences("username", Context.MODE_PRIVATE)
+
+        Toast.makeText(this, token.getString("loginusername"," "), Toast.LENGTH_SHORT).show()
     }
 }

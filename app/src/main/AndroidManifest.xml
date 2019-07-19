@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.medis.laboratcall">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -11,13 +10,17 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+            android:networkSecurityConfig="@xml/network_security_config"
             android:allowBackup="true"
+            android:hardwareAccelerated="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-
+            android:theme="@style/AppTheme"
+            >
+        <activity android:name=".Layanan">
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -33,25 +36,16 @@
         <activity
                 android:name=".lablocation"
                 android:label="@string/title_activity_lablocation"
-                android:theme="@style/AppThemeLogin"
-        >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                android:theme="@style/AppThemeLogin">
         </activity>
         <activity
                 android:name=".LocationActivity"
                 android:label="@string/title_activity_location"
-                android:theme="@style/AppThemeLogin"
-        >
+                android:theme="@style/AppThemeLogin">
         </activity>
         <activity
                 android:name=".MenungguHasil"
                 android:theme="@style/AppThemeLogin">
-
         </activity>
         <activity
                 android:name=".PaketPromo"
@@ -72,6 +66,11 @@
         <activity
                 android:name=".PilihPemeriksaan"
                 android:theme="@style/AppThemeLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".HomeActivity"
@@ -80,6 +79,7 @@
         <activity
                 android:name=".MainActivity"
                 android:theme="@style/AppThemeLogin">
+
         </activity>
     </application>
 
