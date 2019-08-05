@@ -1,7 +1,7 @@
 package com.medis.laboratcall
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -65,6 +65,7 @@ class PilihPemeriksaan : AppCompatActivity() {
             var pembayaran = Intent(this, Pembayaran::class.java)
             pembayaran.putExtra("item",item)
             pembayaran.putExtra("harga",harga.toString())
+            pembayaran.putExtra("layanan", intent.getStringExtra("layanan"))
             startActivity(pembayaran)
             //Toast.makeText(this, data.toString(), Toast.LENGTH_SHORT).show()
         }

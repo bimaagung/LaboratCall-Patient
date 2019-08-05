@@ -2,16 +2,22 @@ package com.medis.laboratcall
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.fragment.app.Fragment
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.medis.laboratcall.Fragment.HomeFragment
 import com.medis.laboratcall.Fragment.ProfilFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
+//import android.R
+import android.util.Log
+import android.widget.TextView
+import com.google.firebase.iid.FirebaseInstanceId
+
+
 
 
 class HomeActivity : AppCompatActivity() {
@@ -51,8 +57,8 @@ class HomeActivity : AppCompatActivity() {
         val fragment = HomeFragment() //tab muncul pertama
         addFragment(fragment)
 
-        var token  = getSharedPreferences("username", Context.MODE_PRIVATE)
+        var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
 
-        Toast.makeText(this, token.getString("loginusername"," "), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, token.getString("iduser"," "), Toast.LENGTH_SHORT).show()
     }
 }

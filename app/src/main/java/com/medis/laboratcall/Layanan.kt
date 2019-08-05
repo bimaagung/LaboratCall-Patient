@@ -1,7 +1,7 @@
 package com.medis.laboratcall
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_layanan.*
 
@@ -13,11 +13,13 @@ class Layanan : AppCompatActivity() {
 
         tbDitempat.setOnClickListener{
             var i =  Intent(this, PilihPemeriksaan::class.java)
+            i.putExtra("layanan", "offlocation")
             startActivity(i)
         }
 
         tbOncall.setOnClickListener{
-            var a =  Intent(this, LocationActivity::class.java)
+            var a =  Intent(this, PilihPemeriksaan::class.java)
+            a.putExtra("layanan", "onlocation")
             startActivity(a)
         }
     }

@@ -5,4 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_location">Map</string>
     <string name="title_activity_lablocation">Map</string>
+    <string name="title_activity_testing_labolocation">Map</string>
+    <string name="title_activity_location_pasien">Map</string>
+    <string name="title_activity_map_pasien">Map</string>
 </resources>
