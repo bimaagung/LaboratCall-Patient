@@ -33,10 +33,9 @@
         -->
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyDs91q4g9okkhZweA86z-QbQIOp1Xdil6g"/>
+                android:value="@string/google_maps_key"/>
 
-        <activity
-                android:name=".MapPasien">
+        <activity android:name=".MapPasien">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -65,7 +64,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
 
         <activity android:name=".Layanan">
         </activity>
@@ -104,13 +102,10 @@
         <activity
                 android:name=".HomeActivity"
                 android:theme="@style/AppThemeLogin">
-
-
         </activity>
         <activity
                 android:name=".MainActivity"
                 android:theme="@style/AppThemeLogin">
-
         </activity>
     </application>
 

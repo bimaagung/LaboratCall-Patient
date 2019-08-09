@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_pembayaran.*
 import android.content.Intent
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ListView
@@ -25,6 +26,7 @@ import com.medis.laboratcall.Data.DataPesanan
 class Pembayaran : AppCompatActivity() {
 
     var listview: ListView? = null
+    var metode_layanan:Boolean  = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,9 @@ class Pembayaran : AppCompatActivity() {
 
 //        var item = intent.getStringArrayExtra("item")
 //        Log.v("HashMapTest", hashMap.toString())
+
         var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
+
 
         totalHarga.text = intent.getStringExtra("harga")
 
@@ -57,9 +61,23 @@ class Pembayaran : AppCompatActivity() {
 
                     if(proses == true)
                     {
-                        Toast.makeText(this, "Proses berhasil",Toast.LENGTH_SHORT).show()
-                        var i =  Intent(this, MenungguHasil::class.java)
-                        startActivity(i)
+
+                        if(metode_layanan.equals(true)){
+                            Toast.makeText(this, "Proses berhasil",Toast.LENGTH_SHORT).show()
+                            var i =  Intent(this, MenungguHasil::class.java)
+                            i.putExtra("layanan","offlocation")
+                            startActivity(i)
+
+                        }else if(metode_layanan.equals(false))
+                        {
+                            Toast.makeText(this, "Proses berhasil",Toast.LENGTH_SHORT).show()
+                            var i =  Intent(this, MenungguHasil::class.java)
+                            i.putExtra("layanan","onlocation")
+                            startActivity(i)
+                        }else{
+                            Log.d("Metode layanan","Error")
+                        }
+
                     }else{
                         Toast.makeText(this, "Proses Gagal",Toast.LENGTH_SHORT).show()
                     }
@@ -70,6 +88,26 @@ class Pembayaran : AppCompatActivity() {
                 })
             rq.add(sr)
         }
+
+        // ============================== Metode Layanan ==========================================
+
+        var layanan_pasien:String = intent.getStringExtra("layanan")
+
+        if(layanan_pasien.equals("offlocation"))
+        {
+            tx_trasnportasi.visibility = VISIBLE
+            metode_layanan = true
+
+        }else if(layanan_pasien.equals("onlocatioan"))
+        {
+            var id_klinik = 1
+            kesediaan_analis(id_klinik)
+            tx_trasnportasi.text = "1000"
+            metode_layanan = false
+        }else{
+            Log.d("metode layanan","metode layanan error")
+        }
+
 
 //        ============================ Firebase ========================================
 
@@ -90,19 +128,6 @@ class Pembayaran : AppCompatActivity() {
 
         })
 
-       // ============================== Transportasi ==========================================
-        var layanan:String = intent.getStringExtra("layanan")
-
-        if(layanan.equals("offlocation"))
-
-        {
-            layout_transportasi.visibility = INVISIBLE
-        }else if(layanan.equals("onlocation")){
-            layout_transportasi.visibility = VISIBLE
-        }else{
-            Toast.makeText(applicationContext, "Error layout transportasi", Toast.LENGTH_LONG).show()
-        }
-
     }
 
 
@@ -118,5 +143,36 @@ class Pembayaran : AppCompatActivity() {
         return result
     }
 
+    fun kesediaan_analis(id_klinik:Number)
+    {
+        //check kesediaan analis
 
+        var url_check_analis=Connection.url + "admin/page_pemeriksaan/check_permission_analis_byid_api/1"
+
+        var rq_check_analis = Volley.newRequestQueue(this)
+        var sr_check_analis = JsonObjectRequest(Request.Method.GET,url_check_analis,null,
+            Response.Listener{ response ->
+                var kesediaan_analis = response.getBoolean("kesediaan_analis")
+
+                if(kesediaan_analis == true)
+                {
+                    metode_layanan = true
+                }else if(kesediaan_analis == false){
+                    metode_layanan = false
+                    Toast.makeText(this, "Mohon maaf, analis lagi tidak melayani OnCall",Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(this, "Sistem kesediaan analis error",Toast.LENGTH_SHORT).show()
+                }
+            },
+            Response.ErrorListener{ error ->
+                Toast.makeText(this, error.message,
+                    Toast.LENGTH_LONG).show()
+            })
+
+        rq_check_analis.add(sr_check_analis)
+
+
+        //======================
+    }
 }

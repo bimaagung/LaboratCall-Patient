@@ -28,11 +28,13 @@
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:text="Menunggu Hasil"
+                  android:id="@+id/text_label_menunggu_hasil"
                   android:textStyle="bold"
                   android:textAlignment="center"
                   android:textSize="20sp"/>
 
         <TextView android:layout_width="match_parent"
+                  android:id="@+id/text_menuggu_hasil"
                   android:layout_height="72dp"
                   android:text="Silahkan melakukan pembayaran dan tunggu sampai hasil pemeriksaan keluar. Untuk melihat hasil pemeriksaan silahkan pilih menu hasil pemeriksaan di menu utama"
                   android:textAlignment="center"

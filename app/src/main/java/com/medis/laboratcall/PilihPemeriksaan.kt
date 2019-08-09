@@ -1,5 +1,11 @@
 package com.medis.laboratcall
 
+//*Firebase Analsis
+//permintaan kesediaan pada analis
+//firebase : id{ nama: ,lat: ,long:, konfirmasi: true/false }
+//if konfirmasi(true) ? show data analis di pasien
+//fitur refresh pada pasien
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -62,11 +68,30 @@ class PilihPemeriksaan : AppCompatActivity() {
             })
 
         tb_lanjut.setOnClickListener{
-            var pembayaran = Intent(this, Pembayaran::class.java)
-            pembayaran.putExtra("item",item)
-            pembayaran.putExtra("harga",harga.toString())
-            pembayaran.putExtra("layanan", intent.getStringExtra("layanan"))
-            startActivity(pembayaran)
+            //mengambil value dari layanan
+            val layananPemeriksaan = intent.getStringExtra("layanan")
+
+            //logika eksekusi tergantung metode layanan
+            if(layananPemeriksaan.equals("offlocation"))
+            {
+                var pembayaran = Intent(this, Pembayaran::class.java)
+                pembayaran.putExtra("item",item)
+                pembayaran.putExtra("harga",harga.toString())
+                pembayaran.putExtra("layanan","offlocation")
+                startActivity(pembayaran)
+
+            }else if(layananPemeriksaan.equals("onlocation"))
+            {
+                var pembayaran = Intent(this, Pembayaran::class.java)
+                pembayaran.putExtra("item",item)
+                pembayaran.putExtra("harga",harga.toString())
+                pembayaran.putExtra("layanan","onlocation")
+                startActivity(pembayaran)
+
+            }else{
+                Log.d("Error Pilih Pemeriksaan","Metode Pembayaran")
+            }
+
             //Toast.makeText(this, data.toString(), Toast.LENGTH_SHORT).show()
         }
     }
