@@ -27,7 +27,22 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.activity_map_pasien.*
+import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.GoogleMap
+import com.medis.laboratcall.Data.DataNotifOncall
+import com.medis.laboratcall.Fragment.HomeFragment
+import kotlinx.android.synthetic.main.konfirm_harga_oncall.view.*
+import java.text.DecimalFormat
 
+@Suppress("DEPRECATION")
 class MapPasien : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -41,6 +56,16 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
     var lat_destination:Double = 0.0
     var lng_destination:Double = 0.0
     lateinit var now: Marker
+    var lat_pasien_permanen:Double = 0.0
+    var lng_pasien_permanen:Double = 0.0
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    var id_pasien:String = ""
+    var distanceText = ""
+    var distanceValue = 0
+    var durationText = ""
+    var formattedHarga = ""
+    var HargaNoFormated = 0
+    var id_pemeriksaan_oncall = ""
 
 
     @SuppressLint("MissingPermission")
@@ -52,46 +77,93 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        tx_analis.text = ""
+
+        id_pasien = intent.getStringExtra("id_pasien")
+        id_pemeriksaan_oncall = intent.getStringExtra("id_pemeriksaan_oncall")
+        var item_pemeriksaan = intent.getSerializableExtra("item")
+        var harga_pemeriksaan = intent.getStringExtra("harga")
+        tx_analis.text = "Bima Agung Setya Budi"
         tx_waktu.text = ""
         tx_jarak.text = ""
+        tx_peran.text = "Analis"
+        tx_harga_map.text = ""
+        aktif_oncall.visibility = View.GONE
+        loading.visibility = View.VISIBLE
+
 
         //Firebase on analis or no
 
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val reference = firebaseDatabase.getReference()
-        val query = reference.child("permintaanOncall").child("2")
+        val query = reference.child("permintaanOncall").child(id_pasien)
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+
                 if (dataSnapshot.exists()) {
-                    lat_analis = dataSnapshot.child("lat_analis").getValue() as Double
-                    lng_analis = dataSnapshot.child("long_analis").getValue() as Double
+                    var konfirmlayanan = dataSnapshot.child("konfirmasiOncall").value
+                    var aktif_oncall_analis = dataSnapshot.child("aktif_oncall").getValue() as String
 
-                    lat_pasien = dataSnapshot.child("lat_pasien").getValue() as Double
-                    lng_pasien = dataSnapshot.child("long_pasien").getValue() as Double
+                    if(aktif_oncall_analis.equals("2"))
+                    {
+                        var a= Intent(this@MapPasien,Pembayaran::class.java)
+                        a.putExtra("layanan","onlocation")
+                        a.putExtra("id_pemeriksaan_oncall",id_pemeriksaan_oncall)
+                        a.putExtra("item", item_pemeriksaan)
+                        a.putExtra("harga", harga_pemeriksaan)
+                        a.putExtra("biaya_transportasi", HargaNoFormated)
+                        startActivity(a)
+                        finish()
+                    }
 
-                    lat_origin = dataSnapshot.child("lat_origin").getValue() as Double
-                    lng_origin = dataSnapshot.child("lng_origin").getValue() as Double
+                    if(konfirmlayanan.toString().equals("1")) {
+                        lat_analis = dataSnapshot.child("lat_analis").getValue() as Double
+                        lng_analis = dataSnapshot.child("lng_analis").getValue() as Double
 
-                    lat_destination = dataSnapshot.child("lat_destination").getValue() as Double
-                    lng_destination = dataSnapshot.child("lng_destination").getValue() as Double
+                        lat_pasien = dataSnapshot.child("lat_pasien").getValue() as Double
+                        lng_pasien = dataSnapshot.child("lng_pasien").getValue() as Double
 
-                    getDirection(lat_origin,lng_origin,lat_destination, lng_destination, lat_analis, lng_analis)
+                        lat_origin = dataSnapshot.child("lat_origin").getValue() as Double
+                        lng_origin = dataSnapshot.child("lng_origin").getValue() as Double
+
+                        lat_destination = dataSnapshot.child("lat_destination").getValue() as Double
+                        lng_destination = dataSnapshot.child("lng_destination").getValue() as Double
+
+//                        progressDialog.dismiss()
+
+                        //Get direction point origin dan point destination
+                        getDirection(lat_origin, lng_origin, lat_destination, lng_destination, lat_analis, lng_analis)
+
+
+                        //proses progressbar selesai
+                        aktif_oncall.visibility = View.VISIBLE
+                        loading.visibility = View.GONE
+
+                        //Pesan debug
+                        Log.d("message_debug",konfirmlayanan.toString())
+
+                    }
+                    else if(konfirmlayanan.toString().equals("0"))
+                    {
+                        aktif_oncall.visibility = View.GONE
+                        loading.visibility = View.VISIBLE
+//                        progressDialog.show()
+                    }
 
                 }else{
                     Log.d("message_debug","Gagal Firebase oncall")
+                   // Toast.makeText(this@MapPasien, "Gagal Firebase oncall", Toast.LENGTH_LONG).show()
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d("message_debug","Error Firebase Konfirm Oncall Analis")
+                Toast.makeText(this@MapPasien, "Error Firebase Konfirm Oncall Analis", Toast.LENGTH_LONG).show()
             }
-        })
 
+        })
         //========================
 
         ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), 123)
-
 
     }
 
@@ -104,6 +176,21 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED)
             {
                 var manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+                //Call last lat & lng pasien
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                fusedLocationClient.lastLocation.addOnSuccessListener { location:Location? ->
+//                    lat_pasien_permanen = location.latitude
+//                    lng_pasien_permanen = location.longitude
+                    //Save Data Notifikasi
+                    if(location == null)
+                    {
+                        Toast.makeText(this@MapPasien, "Silahkan Nyalakan GPS",Toast.LENGTH_LONG).show()
+                    }else{
+                        save_notif_analis("0", id_pasien, "0", location.latitude, location.longitude, -6.709286, 110.943857,-6.709286, 110.943857, location.latitude, location.longitude,"0","0")
+                    }
+
+                }
 
                 var listener = object: LocationListener {
                     override fun onLocationChanged(p0: Location) {
@@ -171,6 +258,24 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
             for (i in 0 until path.size) {
                 mMap.addPolyline(PolylineOptions().addAll(path[i]).color(Color.BLUE))
             }
+
+             distanceText = legs.getJSONObject(0).getJSONObject("distance").getString("text")
+             distanceValue = legs.getJSONObject(0).getJSONObject("distance").getInt("value")
+             durationText = legs.getJSONObject(0).getJSONObject("duration").getString("text")
+             //durationValue = legs.getJSONObject(0).getJSONObject("duration").getString("value")
+
+            //Kalkulasi Harga
+            var kalkulasi_harga = distanceValue*7
+            var formatterHarga = DecimalFormat("#,###")
+            formattedHarga = formatterHarga.format(kalkulasi_harga)
+            HargaNoFormated = kalkulasi_harga
+
+            tx_jarak.text = distanceText
+            tx_waktu.text = durationText
+            tx_harga_map.text = "Rp. $formattedHarga,00"
+
+            konfirmasi_dialog_pemeriksaan_oncall(distanceText,durationText,"Rp. $formattedHarga,00",id_pasien,id_pemeriksaan_oncall)
+
         },
             Response.ErrorListener{ error ->
                 //Toast.makeText(this, error.message,Toast.LENGTH_LONG).show()
@@ -187,8 +292,95 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
 
         var latLng = LatLng(lat_analis, lng_analis);
         now = mMap.addMarker(MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.motor)))
-
-
     }
+
+    fun save_notif_analis(id_analis:String, id_pasien:String, waktu:String, lat_pasien:Double, lng_pasien:Double,
+                          lat_analis:Double, lng_analis:Double, lat_origin:Double, lng_origin:Double,
+                          lat_destination:Double, lng_destination:Double, konfirmasiOncall:String, aktif_oncall:String)
+    {
+        val ref  = FirebaseDatabase.getInstance().getReference("permintaanOncall").child(id_pasien)
+
+        val data_oncall = DataNotifOncall(id_analis, id_pasien, waktu, lat_pasien, lng_pasien, lat_analis, lng_analis, lat_origin, lng_origin, lat_destination, lng_destination, konfirmasiOncall, aktif_oncall)
+
+        ref.setValue(data_oncall).addOnCompleteListener{
+
+        }
+    }
+
+
+    fun dialog_confirm_harga(distance:String, duration:String, harga:String, id_pasien:String)
+    {
+        //Inflate the dialog with custom view
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.konfirm_harga_oncall, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+            .setTitle("Biaya Transportasi")
+            .setCancelable(false)
+        //show dialog
+        val  mAlertDialog = mBuilder.show()
+             mAlertDialog.tx_harga_map.text = harga
+             mAlertDialog.tx_jarak.text = distance
+             mAlertDialog.tx_waktu.text = duration
+
+        mDialogView.tb_confirm_oncall.setOnClickListener {
+            //dismiss dialog
+            //update kolom kesediaan analis dan proses oncall
+            var url_update_pemeriksaan_oncall = Connection.url+"admin/page_pemeriksaan/terima_dialog_pemeriksaan_oncall/$id_pemeriksaan_oncall"
+            var rq_update_pemeriksaan_oncall = Volley.newRequestQueue(this)
+            var sr_update_pemeriksaan_oncall = JsonObjectRequest(Request.Method.GET, url_update_pemeriksaan_oncall,null,
+                Response.Listener{ response -> },Response.ErrorListener {error -> Log.d("debug","error update konfirm oncall") })
+            rq_update_pemeriksaan_oncall.add(sr_update_pemeriksaan_oncall)
+            mAlertDialog.dismiss()
+
+            //Update oncall di firebase
+            val firebaseDatabase = FirebaseDatabase.getInstance()
+            val reference = firebaseDatabase.getReference()
+            reference.child("permintaanOncall").child(id_pasien).child("aktif_oncall").setValue("1")
+        }
+        //cancel button click of custom layout
+        mDialogView.tb_cencel_oncall.setOnClickListener {
+            //Hapus pemeriksaan on call firebase
+            val firebaseDatabase = FirebaseDatabase.getInstance()
+            val reference = firebaseDatabase.getReference()
+            reference.child("permintaanOncall").child(id_pasien).removeValue()
+
+            var i = Intent(this@MapPasien, HomeActivity::class.java)
+            startActivity(i)
+        }
+    }
+
+
+    //nb : nilai di database mysql harus 1 pada kolum kesediaan_analis agar muncul alert dialog
+    fun konfirmasi_dialog_pemeriksaan_oncall(distanceText:String, durationText:String, harga:String, id_pasien:String, id_pemeriksaan_oncall:String)
+    {
+        var url_pemeriksaan_oncall = Connection.url+"admin/page_pemeriksaan/konfirmasi_dialog_pemeriksaan_oncall/$id_pemeriksaan_oncall"
+        var rq_pemeriksaan_oncall = Volley.newRequestQueue(this)
+        var sr_pemeriksaan_oncall = JsonObjectRequest(Request.Method.GET, url_pemeriksaan_oncall,null,
+            Response.Listener{ response ->
+                var kesediaan_analis = response.getString("kesediaan_analis")
+
+                if(kesediaan_analis.equals("0")) //menunggu konfirmasi
+                {
+                    Log.d("Proses_debug","proses konfirmasi analis")
+                }
+                else if(kesediaan_analis.equals("1")) //proses konfirmasi
+                {
+                    dialog_confirm_harga(distanceText, durationText, harga, id_pasien)
+                }
+                else if(kesediaan_analis.equals("2")) //konfirmasi diterima
+                {
+                    Log.d("Proses_debug","proses konfirmasi analis")
+                }
+                else{
+                    Log.d("Proses_debug_error","proses konfirmasi analis")
+                }
+
+            },Response.ErrorListener {error ->
+               // Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+            })
+        rq_pemeriksaan_oncall.add(sr_pemeriksaan_oncall)
+    }
+
 
 }

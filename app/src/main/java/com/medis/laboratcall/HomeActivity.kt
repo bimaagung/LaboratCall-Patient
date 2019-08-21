@@ -58,7 +58,5 @@ class HomeActivity : AppCompatActivity() {
         addFragment(fragment)
 
         var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
-
-        Toast.makeText(this, token.getString("iduser"," "), Toast.LENGTH_SHORT).show()
     }
 }

@@ -25,65 +25,13 @@ class MenungguHasil : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menunggu_hasil)
 
-        tb_selesain.visibility = View.INVISIBLE
+        text_label_menunggu_hasil.text = "Menunggu Hasil"
+        text_menuggu_hasil.text = "Silahkan melakukan pembayaran dan tunggu sampai hasil pemeriksaan keluar. Untuk melihat hasil pemeriksaan silahkan pilih menu hasil pemeriksaan di menu utama"
 
-        var layanan_pasien:String = intent.getStringExtra("layanan")
-
-        if(layanan_pasien.equals("offlocation"))
-        {
-            text_label_menunggu_hasil.text = "Menunggu Hasil"
-            text_menuggu_hasil.text = "Silahkan melakukan pembayaran dan tunggu sampai hasil pemeriksaan keluar. Untuk melihat hasil pemeriksaan silahkan pilih menu hasil pemeriksaan di menu utama"
-
-            tb_selesain.visibility = View.VISIBLE
-            tb_selesain.setOnClickListener{
-                intent_to_home()
-            }
-        }else if(layanan_pasien.equals("onlocation"))
-        {
-            val firebaseDatabase = FirebaseDatabase.getInstance()
-            val reference = firebaseDatabase.getReference()
-
-            //val query = reference.child("konfirm").orderByChild("id_pemeriksaan").equalTo(id_user)
-            val query = reference.child("pemeriksaanOncall").child("2").orderByChild("id_permintaan_oncall").equalTo("2")
-
-            query.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Log.d("message_debug","Berhasil Firebase oncall")
-
-                        text_label_menunggu_hasil.text = "Konfirmasi Analis"
-                        text_menuggu_hasil.text = "Silahkan menunggu analis sampai analis konfirmasi pemesanan pemeriksaan oncall anda, jikan lebih dari 15 menit tidak ada konfirmasi, analis tidak melayani pemeriksaan oncall"
-
-                        tb_selesain.visibility = View.VISIBLE
-                        tb_selesain.setOnClickListener{
-                            intent_to_mapPasien()
-                        }
-
-                    }else{
-                        Log.d("message_debug","Gagal Firebase oncall")
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.d("message_debug","Error Firebase Konfirm Oncall Analis")
-                }
-            })
-
-        }else{
-            Log.d("Menuggu hasil","layanan pasien error")
+        tb_selesain.visibility = View.VISIBLE
+        tb_selesain.setOnClickListener {
+            var i = Intent(this, HomeActivity::class.java)
+            startActivity(i)
         }
-
-    }
-
-    fun intent_to_mapPasien()
-    {
-        var a= Intent(this,MapPasien::class.java)
-        startActivity(a)
-    }
-
-    fun intent_to_home()
-    {
-        var i= Intent(this,HomeActivity::class.java)
-        startActivity(i)
     }
 }

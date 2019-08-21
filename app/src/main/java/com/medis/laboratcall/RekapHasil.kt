@@ -32,7 +32,7 @@ class RekapHasil : AppCompatActivity() {
             Response.Listener { response ->
                 for (x in 0..response.length()-1)
                     list.add(
-                        DataListHasilPemeriksaan(response.getJSONObject(x).getString("id_pemeriksaan"),
+                        DataListHasilPemeriksaan(response.getJSONObject(x).getString("IdDetailPemeriksaan"),
                             response.getJSONObject(x).getString("tanggal"))
                     )
 

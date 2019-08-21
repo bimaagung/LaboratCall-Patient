@@ -7,76 +7,143 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_pembayaran.*
 import android.content.Intent
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.widget.ListView
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.medis.laboratcall.Adapter.PesananAdapter
+import com.medis.laboratcall.Data.DataNotifOncall
 import com.medis.laboratcall.Data.DataPesanan
+import java.io.Serializable
+import java.text.DecimalFormat
 
 
 class Pembayaran : AppCompatActivity() {
 
     var listview: ListView? = null
-    var metode_layanan:Boolean  = true
 
+    var formatterHarga = DecimalFormat("#,###")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pembayaran)
 
-//        var item = intent.getStringArrayExtra("item")
-//        Log.v("HashMapTest", hashMap.toString())
 
+        //Get Token
         var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
+        var id_klinik =  token.getString("klinik","")
+        var id_pasien =  token.getString("iduser","")
+
+        var layanan_pasien:String = intent.getStringExtra("layanan")
+        var item_pemeriksaan = intent.getSerializableExtra("item")
+        var biaya_transportasi:Int = intent.getIntExtra("biaya_transportasi",0)
+        var harga_pemeriksaan = intent.getStringExtra("harga")
+        var id_pemeriksaan_oncall = intent.getStringExtra("id_pemeriksaan_oncall")
+        Toast.makeText(this, biaya_transportasi.toString(),Toast.LENGTH_SHORT).show()
+
+        tb_konfirm.visibility = View.VISIBLE
+        progressBarPembayaran.visibility = View.INVISIBLE
+
+        //Metode Layanan
+        //metode_layanan(layanan_pasien,biaya_transportasi,harga_pemeriksaan.toInt())
+        if(layanan_pasien == "offlocation")
+        {
+            tx_trasnportasi.visibility = View.INVISIBLE
+            tx_harga_transportasi.visibility = View.INVISIBLE
+
+            var format_harga = formatterHarga.format(harga_pemeriksaan.toInt())
+            totalHarga.text = "Rp. "+format_harga.toString()
+
+        }
+        else if(layanan_pasien == "onlocation")
+        {
+            if(biaya_transportasi > 0)
+            {
+                tx_trasnportasi.visibility = View.VISIBLE
+                tx_harga_transportasi.visibility = View.VISIBLE
+
+                var total_harga_oncall:Int = biaya_transportasi.plus(harga_pemeriksaan.toInt())
+
+                var format_harga_transportasi = formatterHarga.format(biaya_transportasi)
+                tx_harga_transportasi.text = "Rp. "+format_harga_transportasi.toString()
+
+                var format_harga = formatterHarga.format(total_harga_oncall)
+                totalHarga.text = "Rp. "+format_harga.toString()
+
+                //tx_harga_transportasi.text = biaya_transportasi.toString()
+              //  totalHarga.text = total_harga_oncall.toString()
 
 
-        totalHarga.text = intent.getStringExtra("harga")
+
+            }else if(biaya_transportasi == 0){
+                tx_trasnportasi.visibility = View.INVISIBLE
+                tx_harga_transportasi.visibility = View.INVISIBLE
+
+                var format_harga = formatterHarga.format(harga_pemeriksaan.toInt())
+                totalHarga.text = "Rp. "+format_harga.toString()
+            }else{
+                Toast.makeText(this, "metode layanan bagian logika transportasi error",Toast.LENGTH_SHORT).show()
+            }
+
+        }else{
+            Log.d("metode layanan","metode layanan error")
+            Toast.makeText(this, "metode layanan error",Toast.LENGTH_SHORT).show()
+        }
 
         listview = findViewById(R.id.listPesanan)
 
+
+
+
+        //adapter list pemesanan
         var adapter = PesananAdapter(this, generateData())
         listview?.adapter = adapter
 
         adapter.notifyDataSetChanged()
 
+        //konfirmasi
         tb_konfirm.setOnClickListener{
+           // var layanan_pasien:String = intent.getStringExtra("layanan")
+            tb_konfirm.visibility = View.INVISIBLE
+            progressBarPembayaran.visibility = View.VISIBLE
+
             val hashMap = intent.getSerializableExtra("item") as HashMap<String, Int>
             Log.d("coba", hashMap.keys.toString())
-            var url=Connection.url + "admin/page_pemeriksaan/pesan_pemeriksaan?item="+hashMap.keys.toString()+"&totalHarga="+intent.getStringExtra("harga")+"&id_pasien="+token.getString("iduser","")+"&klinik=2"
+            var url=Connection.url + "admin/page_pemeriksaan/pesan_pemeriksaan?item="+hashMap.keys.toString()+"&totalHarga="+intent.getStringExtra("harga")+"&id_pasien="+token.getString("iduser","")+"&klinik="+id_klinik
 //            var url=Connection.url + "admin/page_pemeriksaan/pesan_pemeriksaan/satu/dua"
 
             var rq= Volley.newRequestQueue(this)
             var sr= JsonObjectRequest(Request.Method.GET,url,null,
                 Response.Listener{ response ->
                     var proses = response.getBoolean("proses")
+                    var id_pemeriksaan = response.getString("id_pemeriksaan")
 
                     if(proses == true)
                     {
-
-                        if(metode_layanan.equals(true)){
-                            Toast.makeText(this, "Proses berhasil",Toast.LENGTH_SHORT).show()
-                            var i =  Intent(this, MenungguHasil::class.java)
-                            i.putExtra("layanan","offlocation")
-                            startActivity(i)
-
-                        }else if(metode_layanan.equals(false))
+                        if(layanan_pasien == "offlocation")
                         {
-                            Toast.makeText(this, "Proses berhasil",Toast.LENGTH_SHORT).show()
-                            var i =  Intent(this, MenungguHasil::class.java)
-                            i.putExtra("layanan","onlocation")
-                            startActivity(i)
+                            var a= Intent(this,MenungguHasil::class.java)
+                            startActivity(a)
+                            finish()
+                            //Toast.makeText(this, layanan_pasien,Toast.LENGTH_SHORT).show()
+                        }else if(layanan_pasien == "onlocation")
+                        {
+                            if(biaya_transportasi != 0) {
+                                after_oncall(id_pasien, id_pemeriksaan_oncall)
+                                //Toast.makeText(this, layanan_pasien,Toast.LENGTH_SHORT).show()
+                            }else if(biaya_transportasi == 0){
+                                cek_analis(id_klinik, id_pasien, item_pemeriksaan, harga_pemeriksaan,id_pemeriksaan)
+                            }else{
+                                Log.d("Error", "Metode pembayaran")
+                            }
                         }else{
-                            Log.d("Metode layanan","Error")
+                            Log.d("metode layanan","metode layanan error")
+                           // Toast.makeText(this, "Error Layanan",Toast.LENGTH_SHORT).show()
                         }
+
 
                     }else{
                         Toast.makeText(this, "Proses Gagal",Toast.LENGTH_SHORT).show()
@@ -89,46 +156,8 @@ class Pembayaran : AppCompatActivity() {
             rq.add(sr)
         }
 
-        // ============================== Metode Layanan ==========================================
-
-        var layanan_pasien:String = intent.getStringExtra("layanan")
-
-        if(layanan_pasien.equals("offlocation"))
-        {
-            tx_trasnportasi.visibility = VISIBLE
-            metode_layanan = true
-
-        }else if(layanan_pasien.equals("onlocatioan"))
-        {
-            var id_klinik = 1
-            kesediaan_analis(id_klinik)
-            tx_trasnportasi.text = "1000"
-            metode_layanan = false
-        }else{
-            Log.d("metode layanan","metode layanan error")
-        }
-
-
-//        ============================ Firebase ========================================
-
-        val firebaseDatabase = FirebaseDatabase.getInstance()
-        val reference = firebaseDatabase.getReference()
-        reference.child("konfirm").addValueEventListener(object: ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                Toast.makeText(applicationContext, "Database Error", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val childeren = dataSnapshot.children
-
-                childeren.forEach{
-                    Toast.makeText(applicationContext, it.getValue().toString(), Toast.LENGTH_LONG).show()
-                }
-            }
-
-        })
-
     }
+
 
 
     private fun generateData():ArrayList<DataPesanan>{
@@ -143,23 +172,33 @@ class Pembayaran : AppCompatActivity() {
         return result
     }
 
-    fun kesediaan_analis(id_klinik:Number)
+    fun cek_analis(id_klinik:String, id_pasien:String, item_pemeriksaan:Serializable, harga_pemeriksaan:String, id_pemeriksaan:String)
     {
-        //check kesediaan analis
-
-        var url_check_analis=Connection.url + "admin/page_pemeriksaan/check_permission_analis_byid_api/1"
+        var url_check_analis=Connection.url + "admin/page_pemeriksaan/check_permission_analis_byid_api?pasien="+
+                             id_pasien+"&klinik="+id_klinik+"&id_pemeriksaan="+id_pemeriksaan
 
         var rq_check_analis = Volley.newRequestQueue(this)
         var sr_check_analis = JsonObjectRequest(Request.Method.GET,url_check_analis,null,
             Response.Listener{ response ->
-                var kesediaan_analis = response.getBoolean("kesediaan_analis")
+                var aktif_analis = response.getBoolean("aktif_analis")
+                var id_pemeriksaan_oncall = response.getString("id_oncall")
 
-                if(kesediaan_analis == true)
+                if(aktif_analis == true)
                 {
-                    metode_layanan = true
-                }else if(kesediaan_analis == false){
-                    metode_layanan = false
-                    Toast.makeText(this, "Mohon maaf, analis lagi tidak melayani OnCall",Toast.LENGTH_SHORT).show()
+
+                    var a= Intent(this,MapPasien::class.java)
+                    a.putExtra("id_pasien",id_pasien)
+                    a.putExtra("item", item_pemeriksaan)
+                    a.putExtra("harga", harga_pemeriksaan)
+                    a.putExtra("id_pemeriksaan_oncall",id_pemeriksaan_oncall)
+                    startActivity(a)
+                    finish()
+
+                }else if(aktif_analis == false){
+                    var a= Intent(this,HomeActivity::class.java)
+                    startActivity(a)
+                    finish()
+                    Toast.makeText(this, "Mohon maaf, analis lagi tidak melayani pemeriksaan",Toast.LENGTH_SHORT).show()
                 }
                 else{
                     Toast.makeText(this, "Sistem kesediaan analis error",Toast.LENGTH_SHORT).show()
@@ -171,8 +210,31 @@ class Pembayaran : AppCompatActivity() {
             })
 
         rq_check_analis.add(sr_check_analis)
-
-
-        //======================
     }
+
+    fun metode_layanan(layanan_pasien:String,biaya_transportasi:Int,harga_pemeriksaan:Int)
+    {
+
+    }
+
+    fun after_oncall(id_pasien:String, id_pemeriksaan_oncall:String)
+    {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val reference = firebaseDatabase.getReference()
+        reference.child("permintaanOncall").child(id_pasien).removeValue()
+
+        var url_pemeriksaan_oncall = Connection.url+"admin/page_pemeriksaan/konfirmasi_menunggu_hasil_oncall/$id_pemeriksaan_oncall"
+        var rq_pemeriksaan_oncall = Volley.newRequestQueue(this)
+        var sr_pemeriksaan_oncall = JsonObjectRequest(Request.Method.GET, url_pemeriksaan_oncall,null,
+            Response.Listener{ response ->
+                var a= Intent(this,MenungguHasil::class.java)
+                startActivity(a)
+                finish()
+            },Response.ErrorListener {error ->})
+        rq_pemeriksaan_oncall.add(sr_pemeriksaan_oncall)
+
+    }
+
+
 }
+

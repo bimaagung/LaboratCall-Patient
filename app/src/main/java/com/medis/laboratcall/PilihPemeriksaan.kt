@@ -1,11 +1,5 @@
 package com.medis.laboratcall
 
-//*Firebase Analsis
-//permintaan kesediaan pada analis
-//firebase : id{ nama: ,lat: ,long:, konfirmasi: true/false }
-//if konfirmasi(true) ? show data analis di pasien
-//fitur refresh pada pasien
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

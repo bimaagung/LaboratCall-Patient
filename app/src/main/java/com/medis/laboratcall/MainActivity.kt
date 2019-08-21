@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                             var user = response.getString("nama")
                             var umur = response.getString("tanggal_lahir")
                             var foto = response.getString("foto")
+                            var klinik = response.getString("id_klinik")
 
                             //Pindah ke activity home
                             var i= Intent(this,HomeActivity::class.java)
@@ -73,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                             var editor = token.edit()
                             editor.putString("iduser", id)
                             editor.putString("nama", user)
+                            editor.putString("klinik", klinik)
                             editor.commit()
 
                             startActivity(i)

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.medis.laboratcall.Data.DataPesanan
 import com.medis.laboratcall.R
+import java.text.DecimalFormat
 
 class PesananAdapter(private var activity: Activity, private var items: ArrayList<DataPesanan>): BaseAdapter(){
 
@@ -38,7 +39,9 @@ class PesananAdapter(private var activity: Activity, private var items: ArrayLis
 
         var dataPesanan = items[position]
         viewHolder.txtName?.text = dataPesanan.item
-        viewHolder.txtComment?.text = dataPesanan.harga
+        var formatterHarga = DecimalFormat("#,###")
+        var daftar_harga = formatterHarga.format(dataPesanan.harga.toInt())
+        viewHolder.txtComment?.text = "Rp. "+daftar_harga.toString()
 
         return view as View
     }

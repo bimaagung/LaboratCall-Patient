@@ -15,11 +15,6 @@ import com.medis.laboratcall.Data.DataHasilPemeriksaan
 import kotlinx.android.synthetic.main.activity_hasil_pemeriksaan.*
 
 
-
-
-
-
-
 class HasilPemeriksaan : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
