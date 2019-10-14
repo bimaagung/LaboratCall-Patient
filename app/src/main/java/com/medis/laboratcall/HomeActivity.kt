@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import android.util.Log
 import android.widget.TextView
 import com.google.firebase.iid.FirebaseInstanceId
-
-
+import com.medis.laboratcall.Data.DataItemPesanan
+import com.medis.laboratcall.services.FirebaseMessagingService
 
 
 class HomeActivity : AppCompatActivity() {
@@ -56,6 +56,9 @@ class HomeActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener) //koneksi navigasi dan konfigurasi
         val fragment = HomeFragment() //tab muncul pertama
         addFragment(fragment)
+
+        //Clear data pesanan
+        DataItemPesanan.ItemPesanan.clear()
 
         var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
     }

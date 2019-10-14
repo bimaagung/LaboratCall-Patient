@@ -9,4 +9,11 @@
     <string name="title_activity_location_pasien">Map</string>
     <string name="title_activity_map_pasien">Map</string>
     <string name="title_activity_coba_map">Map</string>
+    <string name="selected_item">Selected item:</string>
+
+    <string-array name="jenis_kelamin">
+        <item>L</item>
+        <item>P</item>
+    </string-array>
+
 </resources>

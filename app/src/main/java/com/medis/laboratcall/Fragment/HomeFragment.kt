@@ -66,10 +66,10 @@ class HomeFragment : Fragment() {
             startActivity(k)
         }
 
-//        view.tb_location.setOnClickListener{
-//            var l =  Intent(getActivity(), lablocation::class.java)
-//            startActivity(l)
-//        }
+        view.tb_location.setOnClickListener{
+            var l =  Intent(getActivity(), ListItemPemeriksaan::class.java)
+            startActivity(l)
+        }
 
 
         var id_user = token.getString("iduser","")
@@ -87,30 +87,10 @@ class HomeFragment : Fragment() {
                     Log.d("message_debug","Berhasil Firebase1")
                     //visible notif_badge
                     view.badge_notif.visibility = View.VISIBLE
-
-                    //Margin 16 liniear layout
-                    val param1 = view.linearLayout3.layoutParams as ConstraintLayout.LayoutParams
-                    param1.setMargins(0,40,0,0)
-                    view.linearLayout3.layoutParams = param1
-
-                    //Margin 0 tb_report
-                    val param2 = view.tb_report.layoutParams as RelativeLayout.LayoutParams
-                    param2.setMargins(0,10,0,0)
-                    view.tb_report.layoutParams = param2
                 }else{
                     Log.d("message_debug","Error Firebase1")
                     //visible notif_badge
                     view.badge_notif.visibility = View.INVISIBLE
-
-                    //Margin 16 liniear layout
-                    val param1 = view.linearLayout3.layoutParams as ConstraintLayout.LayoutParams
-                    param1.setMargins(0,40,0,0)
-                    view.linearLayout3.layoutParams = param1
-
-                    //Margin 0 tb_report
-                    val param2 = view.tb_report.layoutParams as RelativeLayout.LayoutParams
-                    param2.setMargins(0,0,0,0)
-                    view.tb_report.layoutParams = param2
                 }
             }
 

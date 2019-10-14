@@ -12,25 +12,32 @@ import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
+import com.medis.laboratcall.Pendaftaran.PendaftaranActivity
+import org.jetbrains.anko.indeterminateProgressDialog
 
 
 class MainActivity : AppCompatActivity() {
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var loading = this.indeterminateProgressDialog("Silahkan Menunggu")
+        loading.apply {
+            setCancelable(false)
+        }
+        loading.dismiss()
 
-        var token  = getSharedPreferences("id", Context.MODE_PRIVATE)
+
+        var token = getSharedPreferences("id", Context.MODE_PRIVATE)
         var tokenNotif = ""
 
-        if(token.getString("iduser"," ") != " ")
-        {
+        if (token.getString("iduser", " ") != " ") {
             var intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
+           // println(token.getString("iduser", " "))
         }
 
         //        Token Notification
@@ -40,58 +47,72 @@ class MainActivity : AppCompatActivity() {
                     tokenNotif = task.result!!.token
                 } else {
 
-                    Toast.makeText(this, task.exception!!.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, task.exception!!.message, Toast.LENGTH_SHORT).show()
                 }
             }
-
-
 
         //FirebaseMessaging.getInstance().subscribeToTopic("test");
 
         tb_login.setOnClickListener {
 
-            var url=Connection.url + "apiclient/apiuser/login/"+tx_username.text.toString()+"/"+tx_password.text.toString()+"/"+tokenNotif
+            loading.show()
 
-            var rq=Volley.newRequestQueue(this)
-            var sr=JsonObjectRequest(Request.Method.GET,url,null,
-                Response.Listener{ response ->
-                         var login = response.getBoolean("login")
+            var url = Connection.url + "apiclient/apiuser/login/" + tx_username.text.toString() + "/" + tx_password.text.toString() + "/" + tokenNotif
 
-                        if(login == true)
-                        {
-                            var id = response.getString("id")
-                            var user = response.getString("nama")
-                            var umur = response.getString("tanggal_lahir")
-                            var foto = response.getString("foto")
-                            var klinik = response.getString("id_klinik")
+            var rq = Volley.newRequestQueue(this)
+            var sr = JsonObjectRequest(Request.Method.GET, url, null,
+                Response.Listener { response ->
+                    loading.dismiss()
+                    var login = response.getBoolean("login")
 
-                            //Pindah ke activity home
-                            var i= Intent(this,HomeActivity::class.java)
-                            intent.putExtra("id", id)
+                    if (login == true) {
+                        var id = response.getString("id")
+                        var user = response.getString("nama")
+                        var jenkel = response.getString("jenis_kelamin")
+                        var umur = response.getString("tanggal_lahir")
+                        var foto = response.getString("foto")
+                        var klinik = response.getString("id_klinik")
+
+                        //Pindah ke activity home
+                        var i = Intent(this, HomeActivity::class.java)
+                        intent.putExtra("id", id)
 
 
-                            //session token
-                            var editor = token.edit()
-                            editor.putString("iduser", id)
-                            editor.putString("nama", user)
-                            editor.putString("klinik", klinik)
-                            editor.commit()
+                        //session token
+                        var editor = token.edit()
+                        editor.putString("iduser", id)
+                        editor.putString("nama", user)
+                        editor.putString("jenkel", jenkel)
+                        editor.putString("klinik", klinik)
+                        editor.commit()
 
-                            startActivity(i)
+                        startActivity(i)
+                        finish()
 
-                        }else if(login == false){
-                            Toast.makeText(this, "Login gagal, silahkan mendaftar ke laboratorium modern terdekat",Toast.LENGTH_SHORT).show()
-                        }
-                        else{
-                            Toast.makeText(this, "Sistem login error",Toast.LENGTH_SHORT).show()
-                        }
+                    } else if (login == false) {
+                        Toast.makeText(
+                            this,
+                            "Login gagal, silahkan mendaftar ke laboratorium modern terdekat",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(this, "Sistem login error", Toast.LENGTH_SHORT).show()
+                    }
                 },
-                Response.ErrorListener{ error ->
-                    Toast.makeText(this, error.message,
-                        Toast.LENGTH_LONG).show()
+                Response.ErrorListener { error ->
+                    Toast.makeText(
+                        this, error.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                 })
 
             rq.add(sr)
+        }
+
+        tb_pendaftaran.setOnClickListener {
+            loading.dismiss()
+            var i = Intent(this, PendaftaranActivity::class.java)
+            startActivity(i)
         }
 
     }

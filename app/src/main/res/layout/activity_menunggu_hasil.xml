@@ -22,8 +22,8 @@
                   android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
                   app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
                   android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/imageView4"
-                  android:layout_marginTop="48dp" android:id="@+id/linearLayout5" android:layout_marginBottom="40dp"
-                  app:layout_constraintBottom_toTopOf="@+id/tb_selesain">
+                  android:layout_marginTop="35dp" android:id="@+id/linearLayout5"
+    >
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         <TextView android:layout_width="match_parent"
                   android:id="@+id/text_menuggu_hasil"
                   android:layout_height="72dp"
-                  android:text="Silahkan melakukan pembayaran dan tunggu sampai hasil pemeriksaan keluar. Untuk melihat hasil pemeriksaan silahkan pilih menu hasil pemeriksaan di menu utama"
+                  android:text="Silahkan melakukan pembayaran dan tunggu sampai hasil pemeriksaan keluar. Untuk melihat hasil pemeriksaan, silahkan pilih menu hasil pemeriksaan di menu utama"
                   android:textAlignment="center"
                   android:textSize="14sp"/>
     </LinearLayout>
@@ -50,8 +50,8 @@
             android:textSize="14sp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="8dp" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" android:layout_marginTop="8dp"
-            android:layout_marginBottom="222dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/tb_selesain"/>
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" android:layout_marginTop="24dp"
+            android:id="@+id/tb_selesain"
+            android:layout_marginBottom="103dp" app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

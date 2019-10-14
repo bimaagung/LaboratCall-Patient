@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".PilihPemeriksaan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F7F7FA"
-        tools:context=".PilihPemeriksaan">
+        android:background="#F7F7FA">
 
     <View android:layout_width="match_parent"
           android:layout_height="172dp"
@@ -23,10 +28,10 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp" android:layout_marginRight="24dp"
             android:id="@+id/constraintLayout3">
 
-        <ImageButton android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
+        <ImageButton android:layout_width="30dp"
+                     android:layout_height="30dp"
                      android:background="@null"
-                     android:src="@drawable/iconback" android:id="@+id/imageButton"
+                     android:src="@drawable/iconback" android:id="@+id/tb_back"
                      app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
                      app:layout_constraintBottom_toBottomOf="parent" android:layout_marginLeft="10dp"
                      android:layout_marginStart="10dp"/>
@@ -34,7 +39,7 @@
                 android:text="Pilih Pemeriksaan"
                 android:textStyle="bold"
                 android:textColor="#FFFF"
-                android:textSize="8pt"
+                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/textView3"
                 app:layout_constraintTop_toTopOf="parent"
@@ -78,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="9pt"
                     android:textStyle="bold"
-                    android:text="Rp. 80.000" app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    android:text="-" app:layout_constraintStart_toEndOf="@+id/imageView3"
                     android:layout_marginLeft="12dp" android:layout_marginStart="12dp"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="28dp" app:layout_constraintVertical_bias="0.0"
@@ -101,25 +106,73 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <LinearLayout
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp"
+            android:background="@drawable/bg_dokter_pengantar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/layout_info_pemeriksaan" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-    <ScrollView android:layout_width="match_parent"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:paddingBottom="200dp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:fillViewport="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView">
+                android:orientation="horizontal"
+        >
+
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content">
+
+
+                <TextView
+                        android:textSize="12sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apabila anda bingung dalam memilih pemeriksaan, anda bisa menghubungi analis"/>
+
+            </LinearLayout>
+
+            <ProgressBar
+                    android:id="@+id/pg_tanya_analis"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+            <ImageButton
+                    android:visibility="gone"
+                    android:id="@+id/tb_tanya_analis"
+                    android:background="@null"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_phone_black_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
         <LinearLayout
                 android:paddingBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/layout_info_pemeriksaan" android:layout_marginTop="8dp"
                 app:layout_constraintHorizontal_bias="0.0">
 
+            <!--======================================== Promo ========================================-->
             <androidx.cardview.widget.CardView
+                    android:visibility="visible"
+                    android:id="@+id/item_promo"
                     app:cardCornerRadius="8dp"
                     android:layout_width="328dp"
                     android:layout_height="wrap_content"
@@ -132,472 +185,612 @@
                         android:orientation="vertical"
                         android:padding="15dp">
 
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Hematologi"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
+                    <RelativeLayout android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:paddingBottom="10dp">
 
+                        <TextView android:layout_width="wrap_content"
+                                  android:padding="6dp"
+                                  android:layout_height="30dp"
+                                  android:text="ITEM PROMO"
+                                  android:textStyle="bold"
+                                  android:textColor="#1A8133"/>
 
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:id="@+id/h1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:id="@+id/h2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:id="@+id/h3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/tb_tambah_promo"
+                                android:text="Tambah"
+                                android:textColor="#58C171"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/tambah_item_promo"/>
                     </RelativeLayout>
 
 
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="328dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal">
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Kimia Klinik"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
-
-
-                    <RelativeLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_item_promo_pilihan"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="wrap_content">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="328dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal">
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Sereologi"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
-
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-            <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="328dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal">
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="15dp">
-
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Parasitologi"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
-
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-
+                    </androidx.recyclerview.widget.RecyclerView>
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="328dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal">
+            <LinearLayout
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/item_pemeriksaan"
+                    android:orientation="vertical">
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                <!--======================================== Hematologi ========================================-->
+                <androidx.cardview.widget.CardView
+                        android:visibility="visible"
+                        app:cardCornerRadius="8dp"
+                        android:layout_width="328dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_horizontal">
 
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Urine"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
-
-
-                    <RelativeLayout
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="15dp">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:text="Hematologi"
+                                android:textColor="#FFFF"
+                                android:background="@drawable/tbsimpanprofil"/>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="HB"/>
+                                android:orientation="horizontal">
 
-                        <TextView
-                                android:layout_width="wrap_content"
+                            <CheckBox
+                                    android:id="@+id/h6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Darah Rutin"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 50.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h1"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                                android:orientation="horizontal">
 
-                    <RelativeLayout
+                            <CheckBox
+                                    android:id="@+id/h1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hemoglobin"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/h2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hematokrit"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/h3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Eritrosit"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/h4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lekosit"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/h5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Trombosit"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:id="@+id/ly_h8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/h8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Golongan Darah"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--======================================== Kimia Klinik ========================================-->
+                <androidx.cardview.widget.CardView
+                        android:visibility="visible"
+                        app:cardCornerRadius="8dp"
+                        android:layout_width="328dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_horizontal">
+
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="15dp">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:text="Kimia Klinik"
+                                android:textColor="#FFFF"
+                                android:background="@drawable/tbsimpanprofil"/>
+
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="HB"/>
+                                android:orientation="horizontal">
 
-                        <TextView
-                                android:layout_width="wrap_content"
+                            <CheckBox
+                                    android:id="@+id/k1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Gula Darah"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 20.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                                android:orientation="horizontal">
 
-                    <RelativeLayout
+                            <CheckBox
+                                    android:id="@+id/k2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cholesterol"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 30.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Triglyseride"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 30.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="HDL/LDL"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Asam Urat"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ureum"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Creatin"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k8"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="SGOT"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/k9"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="SGPT"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--======================================== Sereologi ========================================-->
+                <androidx.cardview.widget.CardView
+                        app:cardCornerRadius="8dp"
+                        android:layout_width="328dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_horizontal">
+
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="15dp">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:text="Imunsereologi"
+                                android:textColor="#FFFF"
+                                android:background="@drawable/tbsimpanprofil"/>
+
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="HB"/>
+                                android:orientation="horizontal">
 
-                        <TextView
-                                android:layout_width="wrap_content"
+                            <CheckBox
+                                    android:id="@+id/s1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Widal"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 40.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                                android:orientation="horizontal">
 
-            <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="328dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_gravity="center_horizontal">
+                            <CheckBox
+                                    android:id="@+id/s2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="hbsAg"/>
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="15dp">
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 40.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
 
-                    <Button android:layout_width="wrap_content"
-                            android:padding="6dp"
-                            android:layout_height="30dp"
-                            android:text="Feces"
-                            android:textColor="#FFFF"
-                            android:background="@drawable/tbsimpanprofil"/>
+                        <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                            <CheckBox
+                                    android:id="@+id/s3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="HCG (Tes Kehamilan)"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
 
 
-                    <RelativeLayout
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--======================================== Urin Analisa ========================================-->
+
+                <androidx.cardview.widget.CardView
+                        app:cardCornerRadius="8dp"
+                        android:layout_width="328dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_horizontal">
+
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="15dp">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:text="UrinAnalisa"
+                                android:textColor="#FFFF"
+                                android:background="@drawable/tbsimpanprofil"/>
+
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="HB"/>
+                                android:orientation="horizontal">
 
-                        <TextView
-                                android:layout_width="wrap_content"
+                            <CheckBox
+                                    android:id="@+id/u1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Urin Rutin"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 25.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                                android:orientation="horizontal">
 
-                    <RelativeLayout
+                            <CheckBox
+                                    android:id="@+id/u2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Protein Urin"/>
+
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 15.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--======================================== Feces ========================================-->
+                <androidx.cardview.widget.CardView
+                        app:cardCornerRadius="8dp"
+                        android:layout_width="328dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center_horizontal">
+
+                    <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="15dp">
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
+                        <Button android:layout_width="wrap_content"
+                                android:padding="6dp"
+                                android:layout_height="30dp"
+                                android:text="Feces"
+                                android:textColor="#FFFF"
+                                android:background="@drawable/tbsimpanprofil"/>
+
+
+                        <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="HB"/>
+                                android:orientation="horizontal">
 
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
+                            <CheckBox
+                                    android:id="@+id/f1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Feces Lengkap"/>
 
-                    <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Rp. 20.000"
+                                    android:textStyle="bold"
+                                    android:layout_alignParentRight="true"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-                        <CheckBox
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HB"/>
-
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Rp. 200.000"
-                                android:textStyle="bold"
-                                android:layout_alignParentRight="true"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline" app:layout_constraintGuide_begin="20dp"
                                                 android:orientation="vertical"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -5,6 +5,7 @@ package com.medis.laboratcall
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -28,10 +29,13 @@ import com.google.firebase.database.ValueEventListener
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.activity_map_pasien.*
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -40,6 +44,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.medis.laboratcall.Data.DataNotifOncall
 import com.medis.laboratcall.Fragment.HomeFragment
 import kotlinx.android.synthetic.main.konfirm_harga_oncall.view.*
+import kotlinx.android.synthetic.main.list_daftar_promo.view.*
 import java.text.DecimalFormat
 
 @Suppress("DEPRECATION")
@@ -66,6 +71,7 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
     var formattedHarga = ""
     var HargaNoFormated = 0
     var id_pemeriksaan_oncall = ""
+    var id_analis = ""
 
 
     @SuppressLint("MissingPermission")
@@ -82,13 +88,14 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
         id_pemeriksaan_oncall = intent.getStringExtra("id_pemeriksaan_oncall")
         var item_pemeriksaan = intent.getSerializableExtra("item")
         var harga_pemeriksaan = intent.getStringExtra("harga")
-        tx_analis.text = "Bima Agung Setya Budi"
         tx_waktu.text = ""
         tx_jarak.text = ""
         tx_peran.text = "Analis"
         tx_harga_map.text = ""
         aktif_oncall.visibility = View.GONE
         loading.visibility = View.VISIBLE
+        tb_wa_analis.visibility = View.GONE
+        var option = 0
 
 
         //Firebase on analis or no
@@ -99,10 +106,22 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
 
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
+                var aktif_oncall_analis = ""
                 if (dataSnapshot.exists()) {
                     var konfirmlayanan = dataSnapshot.child("konfirmasiOncall").value
-                    var aktif_oncall_analis = dataSnapshot.child("aktif_oncall").getValue() as String
+                    try
+                    {
+                        aktif_oncall_analis = dataSnapshot.child("aktif_oncall").getValue() as String
+                    }catch (e: TypeCastException) {
+                        option = 1
+                    }
+                    finally {
+                        if(option == 1)
+                        {
+                            println("Sistem null")
+                        }
+                    }
+
 
                     if(aktif_oncall_analis.equals("2"))
                     {
@@ -117,6 +136,8 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
                     }
 
                     if(konfirmlayanan.toString().equals("1")) {
+                        id_analis = dataSnapshot.child("id_analis").getValue() as String
+
                         lat_analis = dataSnapshot.child("lat_analis").getValue() as Double
                         lng_analis = dataSnapshot.child("lng_analis").getValue() as Double
 
@@ -131,8 +152,22 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
 
 //                        progressDialog.dismiss()
 
-                        //Get direction point origin dan point destination
-                        getDirection(lat_origin, lng_origin, lat_destination, lng_destination, lat_analis, lng_analis)
+                        //Handling Position Error
+                        try
+                        {
+                            //Get direction point origin dan point destination
+                            getDirection(lat_origin, lng_origin, lat_destination, lng_destination, lat_analis, lng_analis)
+                        }
+                        catch (e: Exception) {
+                            option = 1
+                        }
+                        finally {
+                            if(option == 1)
+                            {
+                                dialogKonfirmasi("Lokasi anda terlalu dekat dengan analis")
+                            }
+                        }
+
 
 
                         //proses progressbar selesai
@@ -187,7 +222,7 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
                     {
                         Toast.makeText(this@MapPasien, "Silahkan Nyalakan GPS",Toast.LENGTH_LONG).show()
                     }else{
-                        save_notif_analis("0", id_pasien, "0", location.latitude, location.longitude, -6.709286, 110.943857,-6.709286, 110.943857, location.latitude, location.longitude,"0","0")
+                        save_notif_analis("0", id_pasien, "0", location.latitude, location.longitude, 0.1, 0.1,0.1, 0.1, location.latitude, location.longitude,"0","0")
                     }
 
                 }
@@ -205,7 +240,7 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
                             now.remove()
                         }
                         var latLng = LatLng(lat_analis, lng_analis);
-                        now = mMap.addMarker(MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.motor)))
+                        now = mMap.addMarker(MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.analisoncall)))
 
                     }
 
@@ -233,8 +268,10 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
         val latAnalis =  LatLng(lat_analis, lng_analis)
         val latLngOrigin = LatLng(lat_origin, lng_origin) //pasien
         val latLngDestination = LatLng(lat_destination, lng_destination) //analis
-        mMap.addMarker(MarkerOptions().position(latLngOrigin).title("Pasien"))
-        mMap.addMarker(MarkerOptions().position(latLngDestination).title("Analis"))
+//        mMap.addMarker(MarkerOptions().position(latLngOrigin).title("Pasien"))
+        mMap.addMarker(MarkerOptions().position(latLngOrigin).icon(BitmapDescriptorFactory.fromResource(R.drawable.housepasien)).title("Pasien"))
+//        mMap.addMarker(MarkerOptions().position(latLngDestination).title("Analis"))
+        mMap.addMarker(MarkerOptions().position(latLngDestination).icon(BitmapDescriptorFactory.fromResource(R.drawable.labanalis)).title("Analis"))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latAnalis, 17.0f))
 
 
@@ -347,6 +384,7 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
 
             var i = Intent(this@MapPasien, HomeActivity::class.java)
             startActivity(i)
+            finish()
         }
     }
 
@@ -359,6 +397,41 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
         var sr_pemeriksaan_oncall = JsonObjectRequest(Request.Method.GET, url_pemeriksaan_oncall,null,
             Response.Listener{ response ->
                 var kesediaan_analis = response.getString("kesediaan_analis")
+                var nama_analis = response.getString("nama_analis")
+                var no_wa_analis = response.getString("no_wa_analis")
+                var foto_analis = response.getString("foto_analis")
+
+                var option = 0
+                try
+                {
+                    //Tampil foto
+                    Glide.with(this)
+                        .load(Connection.urlFoto + "assets/img/analis/"+foto_analis)
+                        .fitCenter()
+                        .apply(RequestOptions().override(150, 150))
+                        .into(v_foto_analis)
+                }
+                catch (e: Exception) {
+                    option = 1
+                }
+                finally {
+                    if(option == 1)
+                    {
+                        println("Foto tidak terdeteksi")
+                    }
+                }
+
+
+
+                //Change nama analis
+                tx_analis.text = nama_analis
+                //Aktif Wa Analis
+                tb_wa_analis.visibility = View.VISIBLE
+                tb_wa_analis.setOnClickListener{
+                    val openURL = Intent(android.content.Intent.ACTION_VIEW)
+                        openURL.data = Uri.parse("https://wa.me/$no_wa_analis")
+                    startActivity(openURL)
+                }
 
                 if(kesediaan_analis.equals("0")) //menunggu konfirmasi
                 {
@@ -381,6 +454,24 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
             })
         rq_pemeriksaan_oncall.add(sr_pemeriksaan_oncall)
     }
+
+    fun dialogKonfirmasi(message:String)
+    {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+            .setPositiveButton("Keluar",
+                DialogInterface.OnClickListener { dialog, id ->
+                    finish()
+                })
+            .setNegativeButton("Tunggu",
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                })
+        // Create the AlertDialog object and return it
+        val alert = builder.create()
+        alert.show()
+    }
+
 
 
 }

@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@android:drawable/ic_dialog_dialer"
+        android:icon="@drawable/tbhomea"
         android:title="Home" />
 
     <item
         android:id="@+id/navigation_profil"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="Pengaturan" />
+        android:icon="@drawable/tbusera"
+        android:title="Akun" />
 
 </menu>
