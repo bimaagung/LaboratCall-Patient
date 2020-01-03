@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_layanan.*
 import org.jetbrains.anko.indeterminateProgressDialog
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import android.content.IntentSender
+import android.location.LocationManager
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -47,6 +48,20 @@ class Layanan : AppCompatActivity() {
             onBackPressed()
             finish()
         }
+
+        //Menyembunyikan tbOncall
+        tbOncall.visibility = View.GONE
+
+        //tbAktifGps tampil
+        tbAktifGps.visibility = View.GONE
+        tbAktifGps.setOnClickListener{
+            displayLocationSettingsRequest(this)
+        }
+
+        //check status GPS
+        locationEnabled()
+
+
 
         ly_lab_tutup.visibility = View.GONE
         v_pilihan_layanan.visibility = View.GONE
@@ -75,9 +90,14 @@ class Layanan : AppCompatActivity() {
 
            tbOncall.setOnClickListener{
 
-               ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 123)
+               var a =  Intent(this, PilihPemeriksaan::class.java)
+               a.putExtra("layanan", "onlocation")
+               a.putExtra("layanan_promo","promo")
+               a.putExtra("id_promo",id_promo)
+               a.putExtra("harga_promo",harga_promo)
 
-
+               startActivity(a)
+               finish()
            }
        }else{
            tbDitempat.setOnClickListener{
@@ -88,8 +108,10 @@ class Layanan : AppCompatActivity() {
            }
 
            tbOncall.setOnClickListener{
-               ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 124)
-               displayLocationSettingsRequest(this)
+               var a = Intent(this, PilihPemeriksaan::class.java)
+               a.putExtra("layanan", "onlocation")
+               startActivity(a)
+               finish()
 
            }
        }
@@ -106,7 +128,7 @@ class Layanan : AppCompatActivity() {
         loading.apply {
             setCancelable(false)
         }
-        loading.dismiss()
+        loading.show()
 
         var url = Connection.url + "admin/page_pemeriksaan/cek_laboratorium_klinik?id_klinik=$id_klinik"
 
@@ -155,45 +177,6 @@ class Layanan : AppCompatActivity() {
         alert.show()
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == 123) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                displayLocationSettingsRequest(this)
-
-                    var a =  Intent(this, PilihPemeriksaan::class.java)
-                    a.putExtra("layanan", "onlocation")
-                    a.putExtra("layanan_promo","promo")
-                    a.putExtra("id_promo",id_promo)
-                    a.putExtra("harga_promo",harga_promo)
-
-                    startActivity(a)
-                    finish()
-
-            } else {
-                var intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }else if(requestCode == 124) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                displayLocationSettingsRequest(this)
-
-                    var a = Intent(this, PilihPemeriksaan::class.java)
-                    a.putExtra("layanan", "onlocation")
-                    startActivity(a)
-                    finish()
-
-            } else {
-                var intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-    }
-
     private fun displayLocationSettingsRequest(context: Context) {
 
 
@@ -214,14 +197,15 @@ class Layanan : AppCompatActivity() {
         val result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
         result.setResultCallback(object : ResultCallback<LocationSettingsResult> {
 
-             override fun onResult(result: LocationSettingsResult) {
+            override fun onResult(result: LocationSettingsResult) {
                 val status = result.status
                 when (status.statusCode) {
-                    LocationSettingsStatusCodes.SUCCESS -> Log.i(
+                    LocationSettingsStatusCodes.SUCCESS ->
+                        Log.i(
 
-                        "message",
-                        "All location settings are satisfied."
-                    )
+                            "message",
+                            "All location settings are satisfied."
+                        )
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
                         Log.i(
                             "message",
@@ -232,6 +216,9 @@ class Layanan : AppCompatActivity() {
                             // Show the dialog by calling startResolutionForResult(), and check the result
                             // in onActivityResult().
                             status.startResolutionForResult(this@Layanan, REQUEST_CHECK_SETTINGS)
+
+                            tbOncall.visibility = View.VISIBLE
+                            tbAktifGps.visibility = View.GONE
                         } catch (e: IntentSender.SendIntentException) {
                             Log.i("message", "PendingIntent unable to execute request.")
                         }
@@ -244,6 +231,30 @@ class Layanan : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun locationEnabled() {
+        val lm = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var gps_enabled = true
+        var network_enabled = true
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        if ( gps_enabled && network_enabled) {
+            tbOncall.visibility = View.VISIBLE
+            tbAktifGps.visibility = View.GONE
+        }else{
+            tbOncall.visibility = View.GONE
+            tbAktifGps.visibility = View.VISIBLE
+        }
     }
 
 

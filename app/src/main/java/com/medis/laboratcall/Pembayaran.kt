@@ -63,6 +63,10 @@ class Pembayaran : AppCompatActivity() {
         var item_pemeriksaan = DataItemPesanan.ItemPesanan
 
         var biaya_transportasi:Int = intent.getIntExtra("biaya_transportasi",0)
+
+
+
+
         var harga_pemeriksaan = intent.getStringExtra("harga")
         var id_pemeriksaan_oncall = intent.getStringExtra("id_pemeriksaan_oncall")
        // Toast.makeText(this, biaya_transportasi.toString(),Toast.LENGTH_SHORT).show()
@@ -81,14 +85,13 @@ class Pembayaran : AppCompatActivity() {
             layout_transportasi.visibility = View.GONE
             layout_dokter_pengirim.visibility = View.VISIBLE
 
-
             var format_harga = formatterHarga.format(harga_pemeriksaan.toInt())
             totalHarga.text = "Rp. "+format_harga.toString()
 
         }
         else if(layanan_pasien == "onlocation")
         {
-            if(biaya_transportasi > 0)
+            if(biaya_transportasi.toInt() > 0)
             {
 
                 tb_back.visibility = View.GONE
@@ -107,7 +110,7 @@ class Pembayaran : AppCompatActivity() {
                 //tx_harga_transportasi.text = biaya_transportasi.toString()
               //  totalHarga.text = total_harga_oncall.toString()
 
-            }else if(biaya_transportasi == 0){ //Layanan Offlocation
+            }else if(biaya_transportasi.toInt() == 0){ //Layanan Offlocation
 //                tx_trasnportasi.visibility = View.INVISIBLE
 //                tx_harga_transportasi.visibility = View.INVISIBLE
                 layout_transportasi.visibility = View.GONE
@@ -147,55 +150,62 @@ class Pembayaran : AppCompatActivity() {
             //val hashMap = intent.getSerializableExtra("item") as HashMap<String,Int>
             val hashMap = DataItemPesanan.ItemPesanan
 
-            var url = Connection.url + "admin/page_pemeriksaan/pesan_pemeriksaan?item="+hashMap.keys.toString().replace(" ","")+"&totalHarga="+intent.getStringExtra("harga")+"&id_pasien="+id_pasien+"&klinik="+id_klinik+"&dokter_pengirim="+dokter_pengirim
+            //Logika selesai pemeriksaan oncall
 
-            //var url=Connection.url+"admin/page_pemeriksaan/pesan_pemeriksaan?item=[Hematologi,Hematokrit]&totalHarga=10000&id_pasien="+token.getString("iduser","")+"&klinik="+id_klinik
-            var rq= Volley.newRequestQueue(this)
-            var sr= JsonObjectRequest(Request.Method.GET,url,null,
-                Response.Listener{ response ->
-                    //clear array hashmap pemesanan
-                    loading.dismiss()
+            if(layanan_pasien == "onlocation" && biaya_transportasi > 0)
+            {
+                after_oncall(id_pasien, id_pemeriksaan_oncall) // Sesudah Onlocation
+            }
+            else
+            {
+                var url = Connection.url + "admin/page_pemeriksaan/pesan_pemeriksaan?item="+hashMap.keys.toString().replace(" ","")+"&totalHarga="+intent.getStringExtra("harga")+"&id_pasien="+id_pasien+"&klinik="+id_klinik+"&dokter_pengirim="+dokter_pengirim
+
+                //var url=Connection.url+"admin/page_pemeriksaan/pesan_pemeriksaan?item=[Hematologi,Hematokrit]&totalHarga=10000&id_pasien="+token.getString("iduser","")+"&klinik="+id_klinik
+                var rq= Volley.newRequestQueue(this)
+                var sr= JsonObjectRequest(Request.Method.GET,url,null,
+                    Response.Listener{ response ->
+                        //clear array hashmap pemesanan
+                        loading.dismiss()
 
 
-                    var proses = response.getBoolean("proses")
-                    var id_pemeriksaan = response.getString("id_pemeriksaan")
+                        var proses = response.getBoolean("proses")
+                        var id_pemeriksaan = response.getString("id_pemeriksaan")
 
-                    if(proses == true)
-                    {
-                        if(layanan_pasien == "offlocation")
+                        if(proses == true)
                         {
-                            var a= Intent(this,MenungguHasil::class.java)
-                            startActivity(a)
-                            finish()
-                        }else if(layanan_pasien == "onlocation") //Layanan Onlocation
-                        {
-                            if(biaya_transportasi != 0) {
-                                after_oncall(id_pasien, id_pemeriksaan_oncall) // Sesudah Onlocation
-                            }else if(biaya_transportasi == 0){
-                                cek_analis(id_klinik, id_pasien, item_pemeriksaan, harga_pemeriksaan,id_pemeriksaan) //Pra Onlocation
+                            if(layanan_pasien == "offlocation")
+                            {
+                                var a= Intent(this,MenungguHasil::class.java)
+                                startActivity(a)
+                                finish()
+                            }else if(layanan_pasien == "onlocation") //Layanan Onlocation
+                            {
+                                if(biaya_transportasi == 0){
+                                    cek_analis(id_klinik, id_pasien, item_pemeriksaan, harga_pemeriksaan,id_pemeriksaan) //Pra Onlocation
+                                }else{
+                                    dialogKonfirmasi("Error Metode pembayaran")
+                                }
                             }else{
                                 dialogKonfirmasi("Error Metode pembayaran")
                             }
                         }else{
-                            dialogKonfirmasi("Error Metode pembayaran")
+                            // DataItemPesanan.ItemPesanan.clear()
+                            dialogKonfirmasi("Proses Gagal")
                         }
+                    },
+                    Response.ErrorListener{ error ->
+                        //clear array hashmap pemesanan
+                        loading.dismiss()
+                        //  DataItemPesanan.ItemPesanan.clear()
+                        dialogKonfirmasi("Koneksi internet error")
+                    })
+                sr.setRetryPolicy(DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+                rq.add(sr)
+            }
 
-
-                    }else{
-                       // DataItemPesanan.ItemPesanan.clear()
-                        dialogKonfirmasi("Proses Gagal")
-                    }
-                },
-                Response.ErrorListener{ error ->
-                    //clear array hashmap pemesanan
-                    loading.dismiss()
-                  //  DataItemPesanan.ItemPesanan.clear()
-                    dialogKonfirmasi("Koneksi internet error")
-                })
-            sr.setRetryPolicy(DefaultRetryPolicy(0, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
-            rq.add(sr)
         }
 
+        //Tombol kembali
         tb_back.setOnClickListener {
             finish()
         }
@@ -289,7 +299,6 @@ class Pembayaran : AppCompatActivity() {
                     startActivity(a)
                     finish()
                 }
-
 
             },Response.ErrorListener {error ->
                 dialogKonfirmasi("Koneksi internet error")

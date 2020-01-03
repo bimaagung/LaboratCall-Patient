@@ -88,8 +88,8 @@ class PendaftaranAkun : AppCompatActivity() {
 
             loading.show()
 
+
             no_wa_pasien = tx_no_wa.text.toString()
-            var no_wa_pasien_fix = "62" + no_wa_pasien.substring(1)
             username = tx_username.text.toString().replace(" ","+")
             password= tx_password.text.toString().replace(" ","+")
             retype_password = tx_retype_password.text.toString().replace(" ","+")
@@ -108,41 +108,51 @@ class PendaftaranAkun : AppCompatActivity() {
 
             println(tokenNotif)
 
-            var url= Connection.url + "apiclient/apiuser/register_pasien_api?nama=$nama_pasien_pendaftaran&" +
-                    "jenis_kelamin=$jenis_kelamin&tmp_lahir=$tmp_lahir&tanggal_lahir=$tanggal_lahir&alamat=$alamat&" +
-                    "token_pasien=$tokenNotif&nama_klinik_pasien=$nama_klinik_pasien&no_wa_pasien=$no_wa_pasien_fix&username=$username" +
-                    "&password=$password&retype_password=$retype_password"
+            //Logika input tidak diisi
+            if(nama_pasien_pendaftaran == "" || jenis_kelamin == "" || tmp_lahir == "" || tanggal_lahir == "" || alamat == "" ||
+                no_wa_pasien == "" || username == "" || password == "" || retype_password == "" || nama_klinik_pasien == "")
+            {
+                loading.dismiss()
+                dialogKonfirmasiUsername("Silahkan isi formulir tersebut dengan benar!")
+            }else{
+                var no_wa_pasien_fix = "62" + no_wa_pasien.substring(1)
+
+                var url= Connection.url + "apiclient/apiuser/register_pasien_api?nama=$nama_pasien_pendaftaran&" +
+                        "jenis_kelamin=$jenis_kelamin&tmp_lahir=$tmp_lahir&tanggal_lahir=$tanggal_lahir&alamat=$alamat&" +
+                        "token_pasien=$tokenNotif&nama_klinik_pasien=$nama_klinik_pasien&no_wa_pasien=$no_wa_pasien_fix&username=$username" +
+                        "&password=$password&retype_password=$retype_password"
 
 
-            var rq= Volley.newRequestQueue(this)
-            var sr= JsonObjectRequest(
-                Request.Method.GET,url,null,
-                Response.Listener{ response ->
-                    loading.dismiss()
+                var rq= Volley.newRequestQueue(this)
+                var sr= JsonObjectRequest(
+                    Request.Method.GET,url,null,
+                    Response.Listener{ response ->
+                        loading.dismiss()
 
-                    var proses = response.getBoolean("proses")
+                        var proses = response.getBoolean("proses")
 
-                    var username = response.getBoolean("username")
+                        var username = response.getBoolean("username")
 
-                    if(proses == true)
-                    {
-                        dialogKonfirmasi("Pendaftaran berhasil berhasil, silahkan masuk memalalui login")
-                    }
-                    else if(proses == false && username == true){
-                        dialogKonfirmasiUsername("Username sudah digunakan, silahkan gunakan yang lain")
-                    }
-                    else if(proses == false){
-                        dialogKonfirmasi("Pendaftaran gagal, pastikan semua benar")
-                    }else{
-                        dialogKonfirmasi("Pendaftaran error")
-                    }
-                },
-                Response.ErrorListener{ error ->
-                    loading.dismiss()
-                    dialogKonfirmasi("Pendaftaran error, silahkan periksa koneksi internet anda")
-                })
+                        if(proses == true)
+                        {
+                            dialogKonfirmasi("Pendaftaran berhasil berhasil, silahkan masuk memalalui login")
+                        }
+                        else if(proses == false && username == true){
+                            dialogKonfirmasiUsername("Username sudah digunakan, silahkan gunakan yang lain")
+                        }
+                        else if(proses == false){
+                            dialogKonfirmasi("Pendaftaran gagal, pastikan semua benar")
+                        }else{
+                            dialogKonfirmasi("Pendaftaran error")
+                        }
+                    },
+                    Response.ErrorListener{ error ->
+                        loading.dismiss()
+                        dialogKonfirmasi("Pendaftaran error, silahkan periksa koneksi internet anda")
+                    })
 
-            rq.add(sr)
+                rq.add(sr)
+            }
         }
     }
 

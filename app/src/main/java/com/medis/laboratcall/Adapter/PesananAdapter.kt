@@ -41,7 +41,35 @@ class PesananAdapter(private var activity: Activity, private var items: ArrayLis
         viewHolder.txtName?.text = dataPesanan.item
         var formatterHarga = DecimalFormat("#,###")
         var daftar_harga = formatterHarga.format(dataPesanan.harga.toInt())
-        viewHolder.txtComment?.text = "Rp. "+daftar_harga.toString()
+
+        if(daftar_harga.toString().equals("1"))
+        {
+            viewHolder.txtComment?.text = "Darah Rutin/50.000"
+        }
+        else if(daftar_harga.toString().equals("2"))
+        {
+            viewHolder.txtComment?.text = "Gula Darah/20.000"
+        }
+        else if(daftar_harga.toString().equals("3"))
+        {
+            viewHolder.txtComment?.text = "HDL/LDL / 2.5000"
+        }
+        else if(daftar_harga.toString().equals("4"))
+        {
+            viewHolder.txtComment?.text = "Widal/40.000"
+        }
+        else if(daftar_harga.toString().equals("5"))
+        {
+            viewHolder.txtComment?.text = "Urin Rutin/25.000"
+        }
+        else if(daftar_harga.toString().equals("6"))
+        {
+            viewHolder.txtComment?.text = "Feces Lengkap/20.000"
+        }
+        else
+        {
+            viewHolder.txtComment?.text = "Rp. "+daftar_harga.toString()
+        }
 
         return view as View
     }

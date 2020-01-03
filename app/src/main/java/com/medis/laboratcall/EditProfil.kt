@@ -26,7 +26,11 @@ class EditProfil : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profil)
 
-
+        //Tonbol batal
+        tb_batal_edit.setOnClickListener {
+            onBackPressed()
+            finish()
+        }
 
         var action = intent.getStringExtra("action")
         var id_pasien = intent.getStringExtra("id_pasien")

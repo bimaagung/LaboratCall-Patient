@@ -41,50 +41,144 @@
         </RelativeLayout>
 
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tx_nama_profil"/>
-
-        <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tx_jenkel_profil"/>
-
         <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
             <TextView
+                    android:text="Nama Lengkap "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:text=""
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tx_tmp_lahir_profil"/>
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tx_tgl_lahir_profil"/>
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_nama_profil"/>
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
                 android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tx_alamat_profil"/>
+                android:orientation="horizontal">
 
-        <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tx_klinik_profil"/>
+            <TextView
+                    android:text="Jenis Kelamin: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-        <TextView
+            <TextView
+                    android:text=""
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_jenkel_profil"/>
+
+        </LinearLayout>
+
+        <LinearLayout
                 android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tx_no_wa_profil"/>
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="TTL: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:textColor="#58C071"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tx_tmp_lahir_profil"/>
+                <TextView
+                        android:textColor="#58C071"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tx_tgl_lahir_profil"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="Alamat: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_alamat_profil"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="Lab Klinik: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_klinik_profil"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="No Telp/Hp: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_no_wa_profil"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -117,18 +211,49 @@
 
         </RelativeLayout>
 
-        <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+        <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tx_username_profil"/>
+                android:orientation="horizontal">
 
-        <TextView
+            <TextView
+                    android:text="Username: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:id="@+id/tx_username_profil"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
                 android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/tx_pass_profil"/>
+                android:orientation="horizontal">
+
+            <TextView
+                    android:text="Password: "
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:padding="4dp"
+                    android:background="@drawable/label_profil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#58C071"
+                    android:inputType="textPassword"
+                    android:text="12345678"/>
+
+        </LinearLayout>
+
 
         <TextView
                 android:layout_marginTop="30dp"
@@ -151,11 +276,7 @@
                 android:textAlignment="center"
                 android:text="Logout"/>
 
-
-
     </LinearLayout>
-
-
 
 
     </LinearLayout>

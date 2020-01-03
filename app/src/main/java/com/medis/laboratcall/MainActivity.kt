@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             loading.show()
 
             var url = Connection.url + "apiclient/apiuser/login/" + tx_username.text.toString() + "/" + tx_password.text.toString() + "/" + tokenNotif
+           // var url = Connection.url + "apiclient/apiuser/login/bima/bima/"+ tokenNotif
 
             var rq = Volley.newRequestQueue(this)
             var sr = JsonObjectRequest(Request.Method.GET, url, null,

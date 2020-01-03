@@ -208,11 +208,11 @@ class PilihPemeriksaan : AppCompatActivity() {
                 ly_h8.visibility = View.GONE
 
                 harga += 50000
-                DataItemPesanan.ItemPesanan.put("Hemoglobin", 50000) // Belum fix
-                DataItemPesanan.ItemPesanan.put("Hematokrit", 0)
-                DataItemPesanan.ItemPesanan.put("Eritrosit", 0)
-                DataItemPesanan.ItemPesanan.put("Lekosit", 0)
-                DataItemPesanan.ItemPesanan.put("Trombosit", 0)
+                DataItemPesanan.ItemPesanan.put("Hemoglobin", 1) // Belum fix
+                DataItemPesanan.ItemPesanan.put("Hematokrit", 1)
+                DataItemPesanan.ItemPesanan.put("Eritrosit", 1)
+                DataItemPesanan.ItemPesanan.put("Lekosit", 1)
+                DataItemPesanan.ItemPesanan.put("Trombosit", 1)
 
 
                 updateharga(harga)
@@ -252,9 +252,9 @@ class PilihPemeriksaan : AppCompatActivity() {
         k1.setOnCheckedChangeListener({ buttonView, isChecked ->
             if (isChecked) {
                 harga += 20000
-                DataItemPesanan.ItemPesanan.put("Gula_darah_sewaktu", 20000)
-                DataItemPesanan.ItemPesanan.put("Gula_darah_puasa", 0)
-                DataItemPesanan.ItemPesanan.put("Gula_darah_2_jam_pp", 0)
+                DataItemPesanan.ItemPesanan.put("Gula_darah_sewaktu", 2)
+                DataItemPesanan.ItemPesanan.put("Gula_darah_puasa", 2)
+                DataItemPesanan.ItemPesanan.put("Gula_darah_2_jam_pp", 2)
                 updateharga(harga)
 
             } else {
@@ -295,8 +295,8 @@ class PilihPemeriksaan : AppCompatActivity() {
         k4.setOnCheckedChangeListener({ buttonView, isChecked ->
             if (isChecked) {
                 harga += 25000
-                DataItemPesanan.ItemPesanan.put("HDL-cholesterol", 25000)
-                DataItemPesanan.ItemPesanan.put("LDL-cholesterol", 0)
+                DataItemPesanan.ItemPesanan.put("HDL-cholesterol", 3)
+                DataItemPesanan.ItemPesanan.put("LDL-cholesterol", 3)
                 updateharga(harga)
 
             } else {
@@ -375,10 +375,10 @@ class PilihPemeriksaan : AppCompatActivity() {
         s1.setOnCheckedChangeListener({ buttonView, isChecked ->
             if (isChecked) {
                 harga += 40000
-                DataItemPesanan.ItemPesanan.put("Salmonella_typhi_o", 40000)
-                DataItemPesanan.ItemPesanan.put("Salmonella_typhi_h", 0)
-                DataItemPesanan.ItemPesanan.put("Salmonella_paratyhi_ah", 0)
-                DataItemPesanan.ItemPesanan.put("Salmonella_paratyhi_bh", 0)
+                DataItemPesanan.ItemPesanan.put("Salmonella_typhi_o", 4)
+                DataItemPesanan.ItemPesanan.put("Salmonella_typhi_h", 4)
+                DataItemPesanan.ItemPesanan.put("Salmonella_paratyhi_ah", 4)
+                DataItemPesanan.ItemPesanan.put("Salmonella_paratyhi_bh", 4)
                 updateharga(harga)
 
             } else {
@@ -421,24 +421,24 @@ class PilihPemeriksaan : AppCompatActivity() {
         u1.setOnCheckedChangeListener({ buttonView, isChecked ->
             if (isChecked) {
                 harga += 25000
-                DataItemPesanan.ItemPesanan.put("Warna_urine", 25000)
-                DataItemPesanan.ItemPesanan.put("Kekeruhan", 0)
-                DataItemPesanan.ItemPesanan.put("pH", 0)
-                DataItemPesanan.ItemPesanan.put("Berat_jenis", 0)
-                DataItemPesanan.ItemPesanan.put("Glucosa", 0)
-                DataItemPesanan.ItemPesanan.put("Keton", 0)
-                DataItemPesanan.ItemPesanan.put("Billirubin", 0)
-                DataItemPesanan.ItemPesanan.put("Urobillinogen", 0)
-                DataItemPesanan.ItemPesanan.put("Nitrit", 0)
-                DataItemPesanan.ItemPesanan.put("Eritrosit_urine_macro", 0)
-                DataItemPesanan.ItemPesanan.put("Lekosit_urine_macro", 0)
-                DataItemPesanan.ItemPesanan.put("Ascorbic_acid", 0)
-                DataItemPesanan.ItemPesanan.put("Epitel", 0)
-                DataItemPesanan.ItemPesanan.put("Eritrosit_urine_micro", 0)
-                DataItemPesanan.ItemPesanan.put("Lekosit_urine_micro", 0)
-                DataItemPesanan.ItemPesanan.put("Silinder", 0)
-                DataItemPesanan.ItemPesanan.put("Kristal", 0)
-                DataItemPesanan.ItemPesanan.put("Bakteri", 0)
+                DataItemPesanan.ItemPesanan.put("Warna_urine", 5)
+                DataItemPesanan.ItemPesanan.put("Kekeruhan", 5)
+                DataItemPesanan.ItemPesanan.put("pH", 5)
+                DataItemPesanan.ItemPesanan.put("Berat_jenis", 5)
+                DataItemPesanan.ItemPesanan.put("Glucosa", 5)
+                DataItemPesanan.ItemPesanan.put("Keton", 5)
+                DataItemPesanan.ItemPesanan.put("Billirubin", 5)
+                DataItemPesanan.ItemPesanan.put("Urobillinogen", 5)
+                DataItemPesanan.ItemPesanan.put("Nitrit", 5)
+                DataItemPesanan.ItemPesanan.put("Eritrosit_urine_macro", 5)
+                DataItemPesanan.ItemPesanan.put("Lekosit_urine_macro", 5)
+                DataItemPesanan.ItemPesanan.put("Ascorbic_acid", 5)
+                DataItemPesanan.ItemPesanan.put("Epitel", 5)
+                DataItemPesanan.ItemPesanan.put("Eritrosit_urine_micro", 5)
+                DataItemPesanan.ItemPesanan.put("Lekosit_urine_micro", 5)
+                DataItemPesanan.ItemPesanan.put("Silinder", 5)
+                DataItemPesanan.ItemPesanan.put("Kristal", 5)
+                DataItemPesanan.ItemPesanan.put("Bakteri", 5)
                 updateharga(harga)
 
             } else {
@@ -482,19 +482,19 @@ class PilihPemeriksaan : AppCompatActivity() {
         f1.setOnCheckedChangeListener({ buttonView, isChecked ->
             if (isChecked) {
                 harga += 20000
-                DataItemPesanan.ItemPesanan.put("Warna_feces", 20000)
-                DataItemPesanan.ItemPesanan.put("Konsistensi", 0)
-                DataItemPesanan.ItemPesanan.put("Bau", 0)
-                DataItemPesanan.ItemPesanan.put("Lendir", 0)
-                DataItemPesanan.ItemPesanan.put("Darah_samar", 0)
-                DataItemPesanan.ItemPesanan.put("Parasit", 0)
-                DataItemPesanan.ItemPesanan.put("Lekosit_feces", 0)
-                DataItemPesanan.ItemPesanan.put("Eritrosit_feces", 0)
-                DataItemPesanan.ItemPesanan.put("Protozoa", 0)
-                DataItemPesanan.ItemPesanan.put("Telur_cacing", 0)
-                DataItemPesanan.ItemPesanan.put("Epitel_feces", 0)
-                DataItemPesanan.ItemPesanan.put("Kristal_feces", 0)
-                DataItemPesanan.ItemPesanan.put("Sisa_makanan", 0)
+                DataItemPesanan.ItemPesanan.put("Warna_feces", 6)
+                DataItemPesanan.ItemPesanan.put("Konsistensi", 6)
+                DataItemPesanan.ItemPesanan.put("Bau", 6)
+                DataItemPesanan.ItemPesanan.put("Lendir", 6)
+                DataItemPesanan.ItemPesanan.put("Darah_samar", 6)
+                DataItemPesanan.ItemPesanan.put("Parasit", 6)
+                DataItemPesanan.ItemPesanan.put("Lekosit_feces", 6)
+                DataItemPesanan.ItemPesanan.put("Eritrosit_feces", 6)
+                DataItemPesanan.ItemPesanan.put("Protozoa", 6)
+                DataItemPesanan.ItemPesanan.put("Telur_cacing", 6)
+                DataItemPesanan.ItemPesanan.put("Epitel_feces", 6)
+                DataItemPesanan.ItemPesanan.put("Kristal_feces", 6)
+                DataItemPesanan.ItemPesanan.put("Sisa_makanan", 6)
                 updateharga(harga)
 
             } else {

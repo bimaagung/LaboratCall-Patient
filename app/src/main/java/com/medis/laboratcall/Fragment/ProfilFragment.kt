@@ -91,7 +91,7 @@ class ProfilFragment : Fragment() {
                 view.tx_klinik_profil.text = "Laboratorium Klinik "+nama_klinik_pasien
                 view.tx_no_wa_profil.text = "+"+no_wa_pasien
                 view.tx_username_profil.text = username
-                view.tx_pass_profil.text = password
+//                view.tx_pass_profil.text = password
 
                 // TOMBOL EDIT
 //                view.tb_edit_foto.setOnClickListener {

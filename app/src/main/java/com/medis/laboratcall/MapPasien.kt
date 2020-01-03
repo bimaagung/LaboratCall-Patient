@@ -301,11 +301,24 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
              durationText = legs.getJSONObject(0).getJSONObject("duration").getString("text")
              //durationValue = legs.getJSONObject(0).getJSONObject("duration").getString("value")
 
+//            if(distanceValue.equals(0))
+//            {
+//
+//            }else{
+//
+//            }
+
             //Kalkulasi Harga
-            var kalkulasi_harga = distanceValue*7
+            var kalkulasi_harga = distanceValue*6
+            if(kalkulasi_harga.equals(0)){
+                kalkulasi_harga = 50
+            }else{
+                kalkulasi_harga = distanceValue*6
+            }
             var formatterHarga = DecimalFormat("#,###")
             formattedHarga = formatterHarga.format(kalkulasi_harga)
-            HargaNoFormated = kalkulasi_harga
+            HargaNoFormated  = kalkulasi_harga
+
 
             tx_jarak.text = distanceText
             tx_waktu.text = durationText
@@ -327,8 +340,8 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        var latLng = LatLng(lat_analis, lng_analis);
-        now = mMap.addMarker(MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.motor)))
+        var latLng = LatLng(-6.985901, 110.422425)
+        now = mMap.addMarker(MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.analisoncall)))
     }
 
     fun save_notif_analis(id_analis:String, id_pasien:String, waktu:String, lat_pasien:Double, lng_pasien:Double,
@@ -471,7 +484,5 @@ class MapPasien : AppCompatActivity(), OnMapReadyCallback {
         val alert = builder.create()
         alert.show()
     }
-
-
 
 }

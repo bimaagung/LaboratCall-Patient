@@ -101,7 +101,7 @@ class PaketPromo : AppCompatActivity() {
         var rq_klinik = Volley.newRequestQueue(this)
         var sr_klink = JsonObjectRequest(Request.Method.GET, url_klinik,null,
             Response.Listener{ response ->
-                tx_nama_klinik.text = "Klinik Lab"+response.getString("nama_laboratorium")
+                tx_nama_klinik.text = "Klinik Lab "+response.getString("nama_laboratorium")
                 tx_alamat_klinik.text = response.getString("alamat_laboratorium")
 
             },Response.ErrorListener {error ->

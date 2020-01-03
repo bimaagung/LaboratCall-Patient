@@ -8,12 +8,15 @@
         android:background="#F7F7FA"
         tools:context=".PilihPemeriksaan">
 
-    <View android:layout_width="match_parent"
-          android:layout_height="172dp"
-          android:background="@drawable/headerpmk"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="parent" android:id="@+id/view2" app:layout_constraintHorizontal_bias="0.0"/>
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="172dp"
+        android:background="@drawable/headerpmk"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

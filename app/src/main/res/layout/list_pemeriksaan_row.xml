@@ -21,7 +21,8 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:text="HB"
-            android:textSize="9pt"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
             android:id="@+id/tx_item"
             android:layout_toEndOf="@+id/icon_pembayaran"
             android:layout_toRightOf="@+id/icon_pembayaran"
@@ -31,12 +32,13 @@
             android:layout_toLeftOf="@+id/tx_harga"/>
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="24dp"
             android:layout_alignParentRight="true"
             android:text="Rp. 200.000"
-            android:textSize="9pt"
+            android:textAlignment="viewEnd"
+            android:textSize="16sp"
             android:id="@+id/tx_harga"
-    />
+            android:gravity="end"/>
 
 </RelativeLayout>

@@ -197,7 +197,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="#929292"
                 android:textAlignment="center"
-                android:text="Batal" android:id="@+id/tb_batal_edit" app:layout_constraintStart_toStartOf="parent"
+                android:text="Batal"
+                android:id="@+id/tb_batal_edit" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"/>
         <Button
                 android:background="@drawable/tb_simpan_profil"

@@ -220,12 +220,23 @@ laboratorium di rumah anda"
 
                     <Button android:layout_width="wrap_content"
                             android:padding="6dp"
+                            android:visibility="gone"
                             android:id="@+id/tbOncall"
                             android:layout_height="30dp"
                             android:text="Pilih"
                             android:textColor="#FFFF"
                             android:layout_gravity="right"
                             android:background="@drawable/tbsimpanprofil"/>
+
+                    <Button android:layout_width="wrap_content"
+                            android:padding="6dp"
+                            android:textSize="10sp"
+                            android:id="@+id/tbAktifGps"
+                            android:layout_height="30dp"
+                            android:text="Aktifkan GPS"
+                            android:textColor="#A8A8A8"
+                            android:layout_gravity="right"
+                            android:background="@drawable/tb_aktif_gps"/>
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
